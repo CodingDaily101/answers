@@ -1,43 +1,48 @@
+
+#define the input
+
+memo={}
+
 import math
 import time
 
-memo = {}
-def getBinarySum(n, dp:bool):
-
-    pow = math.log2(n)
+def getNumBit(n, dp:bool):
+# get sum of set bits
+    pow = math.log(n, 2)
     powint = math.floor(pow)
 
-    remainder = int(n-math.pow(2, powint))
+    remainder = n - math.pow(2, powint)
 
-    if(pow == powint):
-        #n is a power of 2
+    if pow == powint:
         return 1
     elif dp and n in memo:
         return memo[n]
     else:
-        return 1 + getBinarySum(remainder, dp)
+        return 1 + getNumBit(remainder, dp)
 
-def getBinarySums(n, dp:bool):
+
+
+def getNumBits(n, dp:bool):
 
     i=1
-    sum=0
-    while i <= n:
-        s = getBinarySum(i, dp)
-        sum += s
-        if dp:
-            memo[i]=s
+    total =0
+    while i<=n:
+        # loop through values 1 to N
+        sum = getNumBit(i, dp)
+        memo[i] = sum
+        total += sum
         i+=1
-    return sum
 
+    # return total
+    return total
+
+N=1000000
+start = time.time()
+result = getNumBits(N, False)
+print(time.time()-start)
+print(result)
 
 start = time.time()
-result = getBinarySums(1000000, True)
-
-print(result)
+result = getNumBits(N, True)
 print(time.time()-start)
-
-start = time.time()
-result = getBinarySums(1000000, False)
-
 print(result)
-print(time.time()-start)
